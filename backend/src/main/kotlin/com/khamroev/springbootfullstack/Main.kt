@@ -4,13 +4,20 @@ import com.khamroev.springbootfullstack.customer.Customer
 import com.khamroev.springbootfullstack.customer.CustomerRepository
 import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.boot.builder.SpringApplicationBuilder
 import org.springframework.boot.runApplication
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import org.springframework.context.annotation.Bean
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
 
 @SpringBootApplication
-class Main {
+class Main : SpringBootServletInitializer() {
+
+    override fun configure(application: SpringApplicationBuilder): SpringApplicationBuilder {
+        return application.sources(Main::class.java)
+    }
+
     @Bean
     fun runner(customerRepository: CustomerRepository): CommandLineRunner {
         return CommandLineRunner {

@@ -7,6 +7,7 @@ plugins {
     kotlin("jvm") version "1.8.22"
     kotlin("plugin.spring") version "1.8.22"
     kotlin("plugin.jpa") version "1.8.22"
+    war
 }
 
 group = "com.khamroev"
@@ -38,6 +39,7 @@ dependencies {
     testImplementation("org.testcontainers:junit-jupiter:1.19.0")
     testImplementation("org.springframework.boot:spring-boot-starter-webflux")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
 }
 
 tasks.withType<KotlinCompile> {
