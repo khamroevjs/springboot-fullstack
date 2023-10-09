@@ -6,7 +6,7 @@ pipeline {
     parameters {
         string(name: 'TOMCAT_PATH',
             defaultValue: 'C:/Program Files/Apache Software Foundation/Tomcat 10.1',
-            description: 'Enter tomcat folder path')
+            description: 'Enter Tomcat Server 10 folder path')
     }
     stages {
         stage('Source') {
@@ -43,15 +43,15 @@ pipeline {
         stage('Deploy') {
             steps {
                 input message: 'Confirm deployment to production...', ok: 'Deploy'
-                pwsh "./${TOMCAT_PATH}/bin/shutdown.bat"
-                pwsh "cp ${env.WORKSPACE}/backend/build/libs/spring-boot-full-stack-1.0.0-plain.jar ${TOMCAT_PATH}/webapps/spring-boot.war"
-                pwsh "./${TOMCAT_PATH}/bin/startup.bat"
+                pwsh "\"${env.TOMCAT_PATH}/bin/shutdown.bat\""
+                pwsh "cp \"${env.WORKSPACE}/backend/build/libs/spring-boot-fullstack-1.0.0-plain.war\" \"${env.TOMCAT_PATH}/webapps/spring-boot.war\""
+                pwsh "\"${env.TOMCAT_PATH}/bin/startup.bat\""
             }
         }
     }
     post {
         always {
-            archiveArtifacts artifacts: '/backend/build/libs/spring-boot-full-stack-1.0.0-plain.jar',
+            archiveArtifacts artifacts: '**/backend/build/libs/spring-boot-fullstack-1.0.0-plain.war',
                 allowEmptyArchive: true,
                 onlyIfSuccessful: true,
                 fingerprint: true,
