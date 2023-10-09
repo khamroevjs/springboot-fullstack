@@ -13,7 +13,7 @@ pipeline {
             steps {
                 pwsh 'gradle --version'
                 pwsh 'git --version'
-                git url: 'https://github.com/khamroevjs/spring-boot-fullstack.git'
+                git url: 'https://github.com/khamroevjs/spring-boot-fullstack.git',
                     branch: 'ci-task',
                     changelog: false, 
                     poll: false
