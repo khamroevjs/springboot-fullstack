@@ -5,8 +5,8 @@ pipeline {
     }
     parameters {
         string(name: 'TOMCAT_PATH',
-            defaultValue: 'C:/Program Files/Apache Software Foundation/Tomcat 10.1/',
-            description: 'Enter tomcat folder path (path must end with "/")')
+            defaultValue: 'C:/Program Files/Apache Software Foundation/Tomcat 10.1',
+            description: 'Enter tomcat folder path')
     }
     stages {
         stage('Source') {
@@ -17,6 +17,13 @@ pipeline {
                     branch: 'ci-task',
                     changelog: false, 
                     poll: false
+            }
+        }
+        stage('Clean') {
+            steps {
+                dir("${env.WORKSPACE}/backend") {
+                    pwsh 'gradle clean'
+                }
             }
         }
         stage('Test') {
@@ -36,9 +43,9 @@ pipeline {
         stage('Deploy') {
             steps {
                 input message: 'Confirm deployment to production...', ok: 'Deploy'
-                pwsh "./${TOMCAT_PATH}bin/shutdown.bat"
-                pwsh "cp ${env.WORKSPACE}/backend/build/libs/spring-boot-full-stack-1.0.0-plain.jar ${TOMCAT_PATH}webapps/spring-boot.war"
-                pwsh "./${TOMCAT_PATH}bin/startup.bat"
+                pwsh "./${TOMCAT_PATH}/bin/shutdown.bat"
+                pwsh "cp ${env.WORKSPACE}/backend/build/libs/spring-boot-full-stack-1.0.0-plain.jar ${TOMCAT_PATH}/webapps/spring-boot.war"
+                pwsh "./${TOMCAT_PATH}/bin/startup.bat"
             }
         }
     }
