@@ -17,13 +17,6 @@ pipeline {
                     url: 'https://github.com/khamroevjs/spring-boot-fullstack.git'
             }
         }
-        stage('Clean') {
-            steps {
-                dir("${env.WORKSPACE}/backend") {
-                    pwsh 'gradle clean'
-                }
-            } 
-        }
         stage('Test') {
             steps {
                 dir("${env.WORKSPACE}/backend") {
