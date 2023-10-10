@@ -8,6 +8,7 @@ plugins {
     kotlin("plugin.spring") version "1.8.22"
     kotlin("plugin.jpa") version "1.8.22"
     id("org.sonarqube") version "4.4.1.3373"
+    jacoco
     war
 }
 
