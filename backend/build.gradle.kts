@@ -8,8 +8,8 @@ plugins {
     kotlin("plugin.spring") version "1.8.22"
     kotlin("plugin.jpa") version "1.8.22"
     id("org.sonarqube") version "4.4.1.3373"
-    jacoco
-    war
+    id("jacoco")
+    id("war")
 }
 
 group = "com.khamroev"
@@ -53,6 +53,17 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+    finalizedBy(tasks.jacocoTestReport)
+}
+
+jacoco {
+    toolVersion = "0.8.10"
+}
+
+tasks.jacocoTestReport {
+    reports {
+        xml.required = true
+    }
 }
 
 jib {
