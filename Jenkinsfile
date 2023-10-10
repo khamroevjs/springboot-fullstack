@@ -60,7 +60,6 @@ pipeline {
                 followSymlinks: false
             
             junit allowEmptyResults: true, testResults: '**/build/test-results/test/TEST-*.xml'
-            recordCoverage(tools: [[pattern: '**build/test.exec']])
         }
     }
 }
