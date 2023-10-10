@@ -3,11 +3,6 @@ pipeline {
     tools {
         gradle 'Gradle-8.4'
     }
-    parameters {
-        string(name: 'TOMCAT_PATH',
-            defaultValue: 'C:\\Program Files\\Apache Software Foundation\\Tomcat 10.1',
-            description: 'Enter Tomcat Server 10 folder path')
-    }
     stages {
         stage('Source') {
             steps {
@@ -40,22 +35,31 @@ pipeline {
                 }
             }
         }
+        stage('SonarQube Analysis') {
+            steps {
+                dir("${env.WORKSPACE}\\backend") {
+                    withSonarQubeEnv(installationName: 'sonar-server', credentialsId: 'sonar-token') {
+                        bat 'gradle sonar'
+                    }
+                }
+            }
+        }
         stage('Deploy') {
             steps {
-                input message: 'Confirm deployment to production...', ok: 'Deploy'
-                bat "\"${env.TOMCAT_PATH}\\bin\\shutdown.bat\""
-                bat "copy \"${env.WORKSPACE}\\backend\\build\\libs\\spring-boot-fullstack-1.0.0-plain.war\" \"${env.TOMCAT_PATH}\\webapps\\spring-boot.war\""
-                bat "\"${env.TOMCAT_PATH}\\bin\\startup.bat\""
+                deploy adapters: [tomcat9(credentialsId: 'tomcat-secret', path: '', url: 'http://localhost:8000/')],
+                    contextPath: 'spring-boot', onFailure: false, war: '**/*.war'
             }
         }
     }
     post {
         always {
-            archiveArtifacts artifacts: '**\\backend\\build\\libs\\spring-boot-fullstack-1.0.0-plain.war',
+            archiveArtifacts artifacts: '**/backend/build/libs/spring-boot-fullstack-1.0.0-plain.war',
                 allowEmptyArchive: true,
                 onlyIfSuccessful: true,
                 fingerprint: true,
                 followSymlinks: false
+            
+            junit allowEmptyResults: true, testResults: '**/build/test-results/test/TEST-*.xml'
         }
     }
 }
