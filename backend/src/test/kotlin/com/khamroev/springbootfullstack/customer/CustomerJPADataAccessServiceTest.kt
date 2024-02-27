@@ -4,29 +4,26 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations
+import org.mockito.junit.jupiter.MockitoExtension
+import org.mockito.kotlin.whenever
 import java.util.UUID
 
+@ExtendWith(MockitoExtension::class)
 class CustomerJPADataAccessServiceTest {
 
     private lateinit var underTest: CustomerJPADataAccessService
-    private lateinit var autoCloseable: AutoCloseable
 
     @Mock
     private lateinit var customerRepository: CustomerRepository
 
     @BeforeEach
     fun setUp() {
-        autoCloseable = MockitoAnnotations.openMocks(this)
         underTest = CustomerJPADataAccessService(customerRepository)
-    }
-
-    @AfterEach
-    fun tearDown() {
-        autoCloseable.close()
     }
 
     @Test
@@ -46,7 +43,7 @@ class CustomerJPADataAccessServiceTest {
     fun insertCustomer() {
         val customer = Customer("ali", "ali@gmail.com", 20)
         val expected = Customer(1, "ali", "ali@gmail.com", 20)
-        Mockito.`when`(customerRepository.save(customer)).thenReturn(expected)
+        whenever(customerRepository.save(customer)).thenReturn(expected)
         val actual = underTest.insertCustomer(customer)
         verify(customerRepository).save(customer)
         assertThat(actual).isEqualTo(expected)

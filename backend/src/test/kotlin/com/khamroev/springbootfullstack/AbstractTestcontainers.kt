@@ -1,12 +1,14 @@
 package com.khamroev.springbootfullstack
 
 import com.github.javafaker.Faker
+import org.assertj.core.api.Assertions
+import org.assertj.core.api.Assertions.assertThat
 import org.flywaydb.core.Flyway
 import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.Test
 import org.springframework.boot.jdbc.DataSourceBuilder
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection
 import org.springframework.jdbc.core.JdbcTemplate
-import org.springframework.test.context.DynamicPropertyRegistry
-import org.springframework.test.context.DynamicPropertySource
 import org.testcontainers.containers.PostgreSQLContainer
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
@@ -19,24 +21,16 @@ abstract class AbstractTestcontainers {
         @JvmStatic
         @BeforeAll
         fun beforeAll() {
-            val flyway = Flyway.configure().dataSource(container.jdbcUrl, container.username, container.password).load()
-            flyway.migrate()
+            Flyway.configure().dataSource(container.jdbcUrl, container.username, container.password).load().migrate()
         }
 
         @JvmStatic
         @Container
+        @ServiceConnection
         protected val container: PostgreSQLContainer<*> = PostgreSQLContainer("postgres:15-alpine")
             .withDatabaseName("khamroev-dao-unit-test")
             .withUsername("khamroev")
-            .withPassword("password")
-
-        @DynamicPropertySource
-        @JvmStatic
-        private fun registerDataSourceProperties(registry: DynamicPropertyRegistry) {
-            registry.add("spring.datasource.url", container::getJdbcUrl)
-            registry.add("spring.datasource.username", container::getUsername)
-            registry.add("spring.datasource.password", container::getPassword)
-        }
+            .withPassword("1234")
 
         @JvmStatic
         private fun getDataSource(): DataSource {
@@ -55,5 +49,11 @@ abstract class AbstractTestcontainers {
 
         @JvmStatic
         protected val FAKER = Faker()
+    }
+
+    @Test
+    fun `can start postgres DB`() {
+        assertThat(container.isRunning).isTrue()
+        assertThat(container.isCreated).isTrue()
     }
 }

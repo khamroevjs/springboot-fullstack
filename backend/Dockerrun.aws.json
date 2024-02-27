@@ -3,7 +3,7 @@
   "containerDefinitions": [
     {
       "name": "customer-api",
-      "image": "ghcr.io/khamroevjs/spring-boot-full-stack:latest",
+      "image": "ghcr.io/khamroevjs/springboot-fullstack:latest",
       "essential": true,
       "memory": 512,
       "portMappings": [
@@ -15,7 +15,7 @@
       "environment": [
         {
           "name": "SPRING_DATASOURCE_URL",
-          "value": "jdbc:postgresql://awseb-e-jgvqimd72n-stack-awsebrdsdatabase-qcslvmbbblna.cpo1e861dk65.us-east-1.rds.amazonaws.com:5432/customer"
+          "value": "jdbc:postgresql://hostname:5432/customer"
         }
       ]
     }

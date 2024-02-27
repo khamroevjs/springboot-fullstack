@@ -17,15 +17,6 @@ class CustomerRepositoryTest : AbstractTestcontainers() {
     @Autowired
     private lateinit var underTest: CustomerRepository
 
-    @Autowired
-    private lateinit var applicationContext: ApplicationContext
-
-    @BeforeEach
-    fun setUp() {
-        println(applicationContext.beanDefinitionCount)
-        println("Debug")
-    }
-
     @Test
     fun existsByEmail() {
         // Given

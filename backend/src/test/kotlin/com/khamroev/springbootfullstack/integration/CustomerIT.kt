@@ -1,4 +1,4 @@
-package com.khamroev.springbootfullstack.journey
+package com.khamroev.springbootfullstack.integration
 
 import com.github.javafaker.Faker
 import com.khamroev.springbootfullstack.AbstractTestcontainers
@@ -39,7 +39,7 @@ class CustomerIT : AbstractTestcontainers() {
             .uri(CUSTOMER_URI)
             .accept(MediaType.APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON)
-            .body(Mono.just(request), CustomerRegistrationRequest::class.java)
+            .bodyValue(request)
             .exchange()
             .expectStatus()
             .isOk()
@@ -79,7 +79,7 @@ class CustomerIT : AbstractTestcontainers() {
             .uri(CUSTOMER_URI)
             .accept(MediaType.APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON)
-            .body(Mono.just(request), CustomerRegistrationRequest::class.java)
+            .bodyValue(request)
             .exchange()
             .expectStatus()
             .isOk()
@@ -119,7 +119,7 @@ class CustomerIT : AbstractTestcontainers() {
             .uri(CUSTOMER_URI)
             .accept(MediaType.APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON)
-            .body(Mono.just(request), CustomerRegistrationRequest::class.java)
+            .bodyValue(request)
             .exchange()
             .expectStatus()
             .isOk()
@@ -137,7 +137,7 @@ class CustomerIT : AbstractTestcontainers() {
             .uri("$CUSTOMER_URI/{id}", registeredCustomer?.id)
             .accept(MediaType.APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON)
-            .body(Mono.just(updateRequest), CustomerRegistrationRequest::class.java)
+            .bodyValue(updateRequest)
             .exchange()
             .expectStatus()
             .isOk()

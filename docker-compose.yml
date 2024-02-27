@@ -4,8 +4,9 @@ services:
     image: postgres:15-alpine
     environment:
       POSTGRES_USER: khamroev
-      POSTGRES_PASSWORD: 2080
+      POSTGRES_PASSWORD: 1234
       PGDATA: /data/postgres
+      POSTGRES_DB: customer
     volumes:
       - db:/data/postgres
     ports:
@@ -15,8 +16,8 @@ services:
     restart: unless-stopped
 
   backend:
-    container_name: spring-boot-full-stack
-    image: ghcr.io/khamroevjs/spring-boot-full-stack
+    container_name: springboot
+    image: ghcr.io/khamroevjs/springboot-fullstack
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgres://database:5432/customer
     ports:
