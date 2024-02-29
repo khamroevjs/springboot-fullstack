@@ -21,7 +21,7 @@ jobs:
           POSTGRES_PASSWORD: 1234
           POSTGRES_DB: customer
         ports:
-          5432:5432
+          - 5432:5432
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
