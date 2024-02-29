@@ -12,7 +12,6 @@ class Main {
     @Bean
     fun runner(customerRepository: CustomerRepository): CommandLineRunner {
         return CommandLineRunner {
-            // TODO("Add data faker")
             val customers = listOf(
                 Customer(1, "Alex", "alex@gmail.com", 21),
                 Customer(2, "Jamila", "jamila@gmail.com", 19),
