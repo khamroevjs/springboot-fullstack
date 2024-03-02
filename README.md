@@ -1,1 +1,1 @@
-# spring-boot-fullstack
+# springboot-fullstack
