@@ -19,18 +19,18 @@ abstract class AbstractTestcontainers {
 
     companion object {
         @JvmStatic
-        @BeforeAll
-        fun beforeAll() {
-            Flyway.configure().dataSource(container.jdbcUrl, container.username, container.password).load().migrate()
-        }
-
-        @JvmStatic
         @Container
         @ServiceConnection
         protected val container: PostgreSQLContainer<*> = PostgreSQLContainer("postgres:15-alpine")
             .withDatabaseName("khamroev-dao-unit-test")
             .withUsername("khamroev")
             .withPassword("1234")
+
+        @JvmStatic
+        @BeforeAll
+        fun beforeAll() {
+            Flyway.configure().dataSource(container.jdbcUrl, container.username, container.password).load().migrate()
+        }
 
         @JvmStatic
         private fun getDataSource(): DataSource {
